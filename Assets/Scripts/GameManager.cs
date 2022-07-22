@@ -1,14 +1,30 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
 	public Paddle paddle { get; private set;}
 	public Ball ball { get; private set;}
 	public Brick[] bricks { get; private set;}
-
+	public ScoreUI scoreUI;
+		
 	public int level = 1;
-	public int score = 0;
+	public int score
+	{
+		get
+		{
+			return this.Score;
+		}
+
+		set
+		{
+			this.Score = value;
+			if(this.scoreUI != null)
+				this.scoreUI.SetScore(this.Score);
+		}
+	}
+	private int Score;
 	public int lives = 3;
 	
 
@@ -25,9 +41,9 @@ public class GameManager : MonoBehaviour
 
 	private void NewGame()
 	{
+		LoadLevel(1);
 		this.score = 0;
 		this.lives = 3;
-		LoadLevel(1);
 	}
 
 	private void LoadLevel(int level)
@@ -41,6 +57,7 @@ public class GameManager : MonoBehaviour
 		this.ball = FindObjectOfType<Ball>();
 		this.paddle = FindObjectOfType<Paddle>();
 		this.bricks = FindObjectsOfType<Brick>();
+		this.scoreUI = FindObjectOfType<ScoreUI>();
 	}
 	
 	private void ResetLevel()
